@@ -21,11 +21,15 @@
     padding: 0;
   }
 
+  html {
+    overflow-x: clip;
+  }
+
   body {
-    background-color: var(--bg-cream);
-    color: var(--text-espresso);
+    background-color: #050302;
+    color: #fff9f0;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    overflow-x: hidden;
+    overflow-x: clip;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
   }
@@ -93,7 +97,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1ebd-e;
+  background: #140e0b;
 }
 
 ::-webkit-scrollbar-thumb {

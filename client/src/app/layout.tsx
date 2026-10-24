@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SWIRL | Artisanal 3D Coffee Roastery & Cafe",
-  description: "Coffee worth getting lost in. Experience our signature 3D scroll-driven coffee journey, handcrafted micro-lot beans, and silky caramel swirls.",
+  title: "10 Fails | Cold Coffee",
+  description: "10 Fails cafe. Scroll the 3D cold coffee brew — then order the glass.",
 };
 
 export default function RootLayout({

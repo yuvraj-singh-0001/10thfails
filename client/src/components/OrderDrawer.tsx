@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { X, Trash2, Plus, Minus, Check, Calendar, Clock, Users, Coffee, Sparkles } from 'lucide-react';
 
 export interface CartItem {
@@ -44,12 +43,9 @@ export default function OrderDrawer({
   if (!isOpen) return null;
 
   // Calculate total price
-  const subtotal = items.reduce((sum, item) => {
-    const numPrice = parseFloat(item.price.replace('$', '')) || 0;
-    return sum + numPrice * item.quantity;
-  }, 0);
-
-  const tax = subtotal * 0.08;
+  const parsePrice = (price: string) => Number(price.replace(/[^\d.]/g, '')) || 0;
+  const subtotal = items.reduce((sum, item) => sum + parsePrice(item.price) * item.quantity, 0);
+  const tax = Math.round(subtotal * 0.05);
   const total = subtotal + tax;
 
   const handleOrderCheckout = () => {
@@ -84,9 +80,9 @@ export default function OrderDrawer({
         <div className="p-6 border-b border-[#201815]/10 flex items-center justify-between bg-white/60 backdrop-blur-md">
           <div className="flex items-center gap-2">
             <span className="text-xl font-display font-extrabold tracking-wider uppercase text-[#201815]">
-              SWIRL
+              10 Fails
             </span>
-            <span className="text-xs text-[#7d6f64] font-semibold uppercase">Experience</span>
+            <span className="text-xs text-[#7d6f64] font-semibold uppercase">Cold coffee</span>
           </div>
           <button
             onClick={onClose}
@@ -106,7 +102,7 @@ export default function OrderDrawer({
                 : 'bg-white/70 text-[#6a5b50] hover:text-[#201815]'
             }`}
           >
-            Sip Bag ({items.reduce((acc, i) => acc + i.quantity, 0)})
+            Bag ({items.reduce((acc, i) => acc + i.quantity, 0)})
           </button>
           <button
             onClick={() => setTab('reserve')}
@@ -129,10 +125,10 @@ export default function OrderDrawer({
                   <Check size={32} />
                 </div>
                 <h3 className="text-2xl font-display font-bold text-[#201815]">
-                  Brew In Progress!
+                  Order received
                 </h3>
                 <p className="text-xs text-[#6a5b50] max-w-xs">
-                  Your order #SW-{Math.floor(1000 + Math.random() * 9000)} has been received by our baristas. Get ready for liquid bliss.
+                  Your cold coffee order #{Math.floor(1000 + Math.random() * 9000)} is in. Give us a few minutes.
                 </p>
                 <div className="p-4 rounded-2xl bg-white border border-[#c48243]/20 w-full max-w-xs text-xs text-[#4a3b32] space-y-1">
                   <div className="font-bold text-[#c48243]">ESTIMATED READY TIME</div>
@@ -144,7 +140,7 @@ export default function OrderDrawer({
                 <Coffee size={40} className="text-[#c48243]/40" />
                 <h3 className="text-base font-bold text-[#201815]">Your Bag is Empty</h3>
                 <p className="text-xs max-w-xs">
-                  Add our signature iced cold brews or artisan croissants to begin your sensory journey.
+                  Add a cold coffee to start.
                 </p>
               </div>
             ) : (
@@ -154,14 +150,8 @@ export default function OrderDrawer({
                     key={item.id}
                     className="p-3.5 rounded-2xl bg-white/90 border border-[#201815]/10 shadow-xs flex items-center gap-3.5"
                   >
-                    <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                        sizes="64px"
-                      />
+                    <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-black">
+                      <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs font-bold text-[#201815] truncate">
@@ -297,15 +287,15 @@ export default function OrderDrawer({
           <div className="p-6 border-t border-[#201815]/10 bg-white/70 backdrop-blur-md space-y-3">
             <div className="flex justify-between text-xs text-[#7d6f64]">
               <span>Subtotal</span>
-              <span className="font-semibold text-[#201815]">${subtotal.toFixed(2)}</span>
+              <span className="font-semibold text-[#201815]">₹{subtotal}</span>
             </div>
             <div className="flex justify-between text-xs text-[#7d6f64]">
-              <span>Estimated Tax</span>
-              <span className="font-semibold text-[#201815]">${tax.toFixed(2)}</span>
+              <span>GST</span>
+              <span className="font-semibold text-[#201815]">₹{tax}</span>
             </div>
             <div className="flex justify-between text-base font-extrabold text-[#201815] pt-2 border-t border-[#201815]/10">
               <span>Total</span>
-              <span className="font-display text-xl text-[#c48243]">${total.toFixed(2)}</span>
+              <span className="font-display text-xl text-[#c48243]">₹{total}</span>
             </div>
 
             <button
